@@ -11,6 +11,7 @@ import os
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ Connect to database """
     name = os.environ.get('PERSONAL_DATA_DB_USERNAME')
     password = os.environ.get('PERSONAL_DATA_DB_PASSWORD')
     host = os.environ.get('PERSONAL_DATA_DB_HOST')
@@ -23,6 +24,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 
 def main():
+    """ Entry point """
     logger = get_logger()
     # Retrieve a database connection using the get_db function
     connection = get_db()
@@ -88,7 +90,8 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
     """ returns the log message obfuscated """
     for field in fields:
         pattern = f'{field}=(.*?)(?={separator}|$)'
@@ -104,7 +107,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
