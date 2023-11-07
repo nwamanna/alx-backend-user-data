@@ -25,6 +25,7 @@ else:
 
 @app.before_request
 def before_request():
+    """ run before any request is done """
     if auth is None:
         return
 
